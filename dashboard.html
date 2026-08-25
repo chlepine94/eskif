@@ -218,6 +218,66 @@
     text-align: right;
   }
 
+  .table-wrap {
+    background: var(--panel-bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 8px 20px 4px;
+    overflow-x: auto;
+  }
+  table.pivot {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  table.pivot th {
+    text-align: right;
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  table.pivot th.cell-name { text-align: left; }
+  table.pivot td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #1d1e17;
+  }
+  table.pivot tbody tr:hover td { background: #191a13; }
+  td.cell-name {
+    text-align: left;
+    color: var(--text-dim);
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+  }
+  td.cell-num { text-align: right; color: var(--text); }
+  td.cell-empty { color: var(--text-faint); }
+  td.cell-total { color: var(--copper); font-weight: 700; }
+  tr.table-group-row td {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 600;
+    padding-top: 18px;
+    padding-bottom: 6px;
+    border-bottom: none;
+  }
+  tr.table-total-row td {
+    border-top: 1px solid var(--line);
+    border-bottom: none;
+    padding-top: 12px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  tr.table-total-row td.cell-total { color: var(--copper); }
+
   footer {
     color: var(--text-faint);
     font-size: 11px;
@@ -416,8 +476,23 @@
   </div>
 </section>
 
+<section>
+  <div class="section-title">Monthly totals by circuit</div>
+  <div class="table-wrap">
+    
+    <table class="pivot">
+      <thead>
+        <tr><th class="cell-name">Circuit</th><th>JAN</th><th>FEB</th><th>MAR</th><th>APR</th><th>MAY</th><th>JUN</th><th>JUL</th><th>AUG</th><th>SEP</th><th>OCT</th><th>NOV</th><th>DEC</th><th>Year</th></tr>
+      </thead>
+      <tbody>
+        <tr class="table-group-row"><td colspan="14">Device 557653</td></tr><tr><td class="cell-name">Radiant-thermopompe-1-e4547</td><td class="cell-num">49</td><td class="cell-num">441</td><td class="cell-num">402</td><td class="cell-num">225</td><td class="cell-num">164</td><td class="cell-num">62</td><td class="cell-num">76</td><td class="cell-num">57</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">1,476</td></tr><tr><td class="cell-name">Radiant-thermopompe-2-e4547</td><td class="cell-num cell-empty">—</td><td class="cell-num">229</td><td class="cell-num">403</td><td class="cell-num">225</td><td class="cell-num">165</td><td class="cell-num">62</td><td class="cell-num">76</td><td class="cell-num">57</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">1,217</td></tr><tr><td class="cell-name">Bioness-2-e4547</td><td class="cell-num cell-empty">—</td><td class="cell-num">51</td><td class="cell-num">84</td><td class="cell-num">70</td><td class="cell-num">87</td><td class="cell-num">83</td><td class="cell-num">87</td><td class="cell-num">69</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">532</td></tr><tr><td class="cell-name">Bioness-1-e4547</td><td class="cell-num">2</td><td class="cell-num">13</td><td class="cell-num">14</td><td class="cell-num">11</td><td class="cell-num">14</td><td class="cell-num">14</td><td class="cell-num">14</td><td class="cell-num">11</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">92</td></tr><tr><td class="cell-name">terrasse-commune-e4547</td><td class="cell-num">1</td><td class="cell-num">8</td><td class="cell-num">9</td><td class="cell-num">8</td><td class="cell-num">9</td><td class="cell-num">8</td><td class="cell-num">9</td><td class="cell-num">6</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">58</td></tr><tr class="table-group-row"><td colspan="14">Device 562926</td></tr><tr><td class="cell-name">puit-2-e4547</td><td class="cell-num cell-empty">—</td><td class="cell-num">137</td><td class="cell-num">131</td><td class="cell-num">104</td><td class="cell-num">179</td><td class="cell-num">95</td><td class="cell-num">182</td><td class="cell-num">97</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">927</td></tr><tr><td class="cell-name">fil-chauffant-terrasse-e4547</td><td class="cell-num cell-empty">—</td><td class="cell-num">104</td><td class="cell-num">166</td><td class="cell-num">174</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">444</td></tr><tr><td class="cell-name">Radiant-chauffe-eau-1-e4547</td><td class="cell-num cell-empty">—</td><td class="cell-num">56</td><td class="cell-num">68</td><td class="cell-num">49</td><td class="cell-num">22</td><td class="cell-num">2</td><td class="cell-num">15</td><td class="cell-num">8</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">219</td></tr><tr><td class="cell-name">Radiant-chauffe-eau-2-e4547</td><td class="cell-num cell-empty">—</td><td class="cell-num">54</td><td class="cell-num">67</td><td class="cell-num">49</td><td class="cell-num">21</td><td class="cell-num">1</td><td class="cell-num">13</td><td class="cell-num">7</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">212</td></tr><tr><td class="cell-name">pompe-glycole-e4547</td><td class="cell-num cell-empty">—</td><td class="cell-num">30</td><td class="cell-num">50</td><td class="cell-num">26</td><td class="cell-num">11</td><td class="cell-num">6</td><td class="cell-num">7</td><td class="cell-num">5</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">136</td></tr><tr><td class="cell-name">plancher-chauffant-terrasse-comm-e4547</td><td class="cell-num cell-empty">—</td><td class="cell-num">21</td><td class="cell-num">26</td><td class="cell-num">14</td><td class="cell-num">2</td><td class="cell-num cell-empty">—</td><td class="cell-num">0</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">63</td></tr><tr><td class="cell-name">puit-1-e4547</td><td class="cell-num cell-empty">—</td><td class="cell-num">9</td><td class="cell-num">10</td><td class="cell-num">9</td><td class="cell-num">10</td><td class="cell-num">4</td><td class="cell-num">12</td><td class="cell-num">6</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-empty">—</td><td class="cell-num cell-total">61</td></tr><tr class="table-total-row"><td class="cell-name">ALL CIRCUITS</td><td class="cell-num">51</td><td class="cell-num">1,152</td><td class="cell-num">1,431</td><td class="cell-num">964</td><td class="cell-num">684</td><td class="cell-num">337</td><td class="cell-num">492</td><td class="cell-num">324</td><td class="cell-num">0</td><td class="cell-num">0</td><td class="cell-num">0</td><td class="cell-num">0</td><td class="cell-num cell-total">5,437</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
 <footer>
-  <span>Generated 2026-08-25 15:45</span>
+  <span>Generated 2026-08-25 16:09</span>
   <span>Source: Emporia Vue · usage_daily</span>
 </footer>
 
