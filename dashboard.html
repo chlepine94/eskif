@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ESKIF — Load Report 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0d0a;
+    --panel-bg: #14150f;
+    --line: #2a2b22;
+    --copper: #c9793f;
+    --copper-dim: #6b4527;
+    --teal: #7fb8ad;
+    --text: #e8e6de;
+    --text-dim: #8b8d82;
+    --text-faint: #55564c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(201,121,63,0.05), transparent 45%),
+      radial-gradient(circle at 85% 100%, rgba(127,184,173,0.04), transparent 45%);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    padding: 48px 56px 72px;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 28px;
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--copper);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-top: 6px;
+  }
+  .year-total { text-align: right; }
+  .year-total .label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .year-total .value {
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--copper);
+    line-height: 1;
+  }
+  .year-total .value .unit {
+    font-size: 18px;
+    color: var(--text-dim);
+    margin-left: 6px;
+    font-weight: 500;
+  }
+
+  section { margin-bottom: 48px; }
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .breaker-panel {
+    display: flex;
+    gap: 8px;
+    background: var(--panel-bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 24px 20px 16px;
+  }
+  .breaker {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .breaker-readout {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .breaker-track {
+    width: 100%;
+    max-width: 26px;
+    height: 130px;
+    background: #1a1b14;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .breaker-fill {
+    width: 100%;
+    background: linear-gradient(180deg, var(--copper) 0%, var(--copper-dim) 100%);
+    border-top: 2px solid #e0975e;
+  }
+  .breaker-future .breaker-track { border-style: dashed; }
+  .breaker-future .breaker-readout { color: var(--text-faint); }
+  .breaker-label {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    margin-top: 10px;
+  }
+  .breaker-future .breaker-label { color: var(--text-faint); }
+
+  .panels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 20px;
+  }
+  .panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 20px 22px;
+  }
+  .panel-header {
+    display: flex;
+    align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+  }
+  .panel-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    font-weight: 600;
+    margin-right: 10px;
+  }
+  .panel-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+  }
+  .panel-total {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--copper);
+    font-weight: 700;
+  }
+  .unit {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  .load-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 7px 0;
+  }
+  .load-name {
+    width: 225px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .load-track {
+    flex: 1;
+    height: 6px;
+    background: #1a1b14;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .load-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--copper-dim), var(--teal));
+    border-radius: 3px;
+  }
+  .load-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    width: 90px;
+    text-align: right;
+  }
+
+  footer {
+    color: var(--text-faint);
+    font-size: 11px;
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="eyebrow">Twin House · Circuit Load Monitor</div>
+    <h1>ESKIF — 2026</h1>
+    <div class="subtitle">Year to date, all monitored circuits</div>
+  </div>
+  <div class="year-total">
+    <div class="label">Total consumption</div>
+    <div class="value">5,437<span class="unit">kWh</span></div>
+  </div>
+</header>
+
+<section>
+  <div class="section-title">Monthly load — 2026</div>
+  <div class="breaker-panel">
+    
+        <div class="breaker">
+          <div class="breaker-readout">51</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:3.6%"></div>
+          </div>
+          <div class="breaker-label">JAN</div>
+        </div>
+        <div class="breaker">
+          <div class="breaker-readout">1152</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:80.5%"></div>
+          </div>
+          <div class="breaker-label">FEB</div>
+        </div>
+        <div class="breaker">
+          <div class="breaker-readout">1431</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:100.0%"></div>
+          </div>
+          <div class="breaker-label">MAR</div>
+        </div>
+        <div class="breaker">
+          <div class="breaker-readout">964</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:67.4%"></div>
+          </div>
+          <div class="breaker-label">APR</div>
+        </div>
+        <div class="breaker">
+          <div class="breaker-readout">684</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:47.8%"></div>
+          </div>
+          <div class="breaker-label">MAY</div>
+        </div>
+        <div class="breaker">
+          <div class="breaker-readout">337</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:23.6%"></div>
+          </div>
+          <div class="breaker-label">JUN</div>
+        </div>
+        <div class="breaker">
+          <div class="breaker-readout">492</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:34.4%"></div>
+          </div>
+          <div class="breaker-label">JUL</div>
+        </div>
+        <div class="breaker">
+          <div class="breaker-readout">324</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:22.6%"></div>
+          </div>
+          <div class="breaker-label">AUG</div>
+        </div>
+        <div class="breaker breaker-future">
+          <div class="breaker-readout">0</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:0.0%"></div>
+          </div>
+          <div class="breaker-label">SEP</div>
+        </div>
+        <div class="breaker breaker-future">
+          <div class="breaker-readout">0</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:0.0%"></div>
+          </div>
+          <div class="breaker-label">OCT</div>
+        </div>
+        <div class="breaker breaker-future">
+          <div class="breaker-readout">0</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:0.0%"></div>
+          </div>
+          <div class="breaker-label">NOV</div>
+        </div>
+        <div class="breaker breaker-future">
+          <div class="breaker-readout">0</div>
+          <div class="breaker-track">
+            <div class="breaker-fill" style="height:0.0%"></div>
+          </div>
+          <div class="breaker-label">DEC</div>
+        </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title">Circuit breakdown by panel</div>
+  <div class="panels">
+    
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-eyebrow">PANEL</span>
+            <span class="panel-title">Device 557653</span>
+            <span class="panel-total">3,375 <span class="unit">kWh</span></span>
+          </div>
+          
+            <div class="load-row">
+              <div class="load-name">Radiant-thermopompe-1-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:100.0%"></div></div>
+              <div class="load-value">1,476.3<span class="unit">kWh</span></div>
+            </div>
+            <div class="load-row">
+              <div class="load-name">Radiant-thermopompe-2-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:82.4%"></div></div>
+              <div class="load-value">1,216.8<span class="unit">kWh</span></div>
+            </div>
+            <div class="load-row">
+              <div class="load-name">Bioness-2-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:36.0%"></div></div>
+              <div class="load-value">531.9<span class="unit">kWh</span></div>
+            </div>
+            <div class="load-row">
+              <div class="load-name">Bioness-1-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:6.3%"></div></div>
+              <div class="load-value">92.4<span class="unit">kWh</span></div>
+            </div>
+            <div class="load-row">
+              <div class="load-name">terrasse-commune-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:3.9%"></div></div>
+              <div class="load-value">57.8<span class="unit">kWh</span></div>
+            </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-eyebrow">PANEL</span>
+            <span class="panel-title">Device 562926</span>
+            <span class="panel-total">2,062 <span class="unit">kWh</span></span>
+          </div>
+          
+            <div class="load-row">
+              <div class="load-name">puit-2-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:62.8%"></div></div>
+              <div class="load-value">926.8<span class="unit">kWh</span></div>
+            </div>
+            <div class="load-row">
+              <div class="load-name">fil-chauffant-terrasse-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:30.1%"></div></div>
+              <div class="load-value">444.4<span class="unit">kWh</span></div>
+            </div>
+            <div class="load-row">
+              <div class="load-name">Radiant-chauffe-eau-1-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:14.8%"></div></div>
+              <div class="load-value">219.1<span class="unit">kWh</span></div>
+            </div>
+            <div class="load-row">
+              <div class="load-name">Radiant-chauffe-eau-2-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:14.4%"></div></div>
+              <div class="load-value">212.1<span class="unit">kWh</span></div>
+            </div>
+            <div class="load-row">
+              <div class="load-name">pompe-glycole-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:9.2%"></div></div>
+              <div class="load-value">135.7<span class="unit">kWh</span></div>
+            </div>
+            <div class="load-row">
+              <div class="load-name">plancher-chauffant-terrasse-comm-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:4.3%"></div></div>
+              <div class="load-value">63.1<span class="unit">kWh</span></div>
+            </div>
+            <div class="load-row">
+              <div class="load-name">puit-1-e4547</div>
+              <div class="load-track"><div class="load-fill" style="width:4.1%"></div></div>
+              <div class="load-value">60.6<span class="unit">kWh</span></div>
+            </div>
+        </div>
+  </div>
+</section>
+
+<footer>
+  <span>Generated 2026-08-25 15:45</span>
+  <span>Source: Emporia Vue · usage_daily</span>
+</footer>
+
+</body>
+</html>
